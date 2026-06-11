@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remortgage Cost Comparison — Mortgage Advice Partners</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --coral: #F07B6B;
+    --coral-light: #fde8e5;
+    --coral-mid: #f9cfc9;
+    --dark: #2a2a2a;
+    --mid: #555;
+    --muted: #888;
+    --border: #e5e5e5;
+    --bg: #f8f7f6;
+    --white: #fff;
+    --green: #1a7a4a;
+    --green-bg: #edf7f2;
+    --amber: #b45309;
+    --amber-bg: #fef3c7;
+    --radius: 10px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--dark);
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .logo-chevron {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+
+  .logo-text {
+    line-height: 1.15;
+  }
+
+  .logo-text .top {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--dark);
+    letter-spacing: -0.3px;
+  }
+
+  .logo-text .bottom {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--coral);
+    letter-spacing: 0.1px;
+  }
+
+  .header-title {
+    margin-left: auto;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  /* MAIN LAYOUT */
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 36px 24px 60px;
+  }
+
+  /* META FIELDS */
+  .meta-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 640px) {
+    .meta-card { grid-template-columns: 1fr; }
+    header { padding: 16px 18px; }
+    .header-title { display: none; }
+    main { padding: 24px 16px 60px; }
+  }
+
+  .field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+
+  .field input, .field textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 9px 11px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--dark);
+    background: var(--bg);
+    transition: border-color 0.15s;
+    outline: none;
+  }
+
+  .field input:focus, .field textarea:focus {
+    border-color: var(--coral);
+    background: var(--white);
+  }
+
+  /* COMPARISON GRID */
+  .comparison-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+
+  .comparison-header {
+    display: grid;
+    grid-template-columns: 1fr 1px 200px 200px;
+    background: var(--dark);
+    color: var(--white);
+  }
+
+  .comparison-header .ch-label { padding: 14px 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+  .comparison-header .ch-divider { background: rgba(255,255,255,0.08); }
+  .comparison-header .ch-current { padding: 14px 20px; font-size: 13px; font-weight: 600; letter-spacing: 0.2px; }
+  .comparison-header .ch-alt { padding: 14px 20px; font-size: 13px; font-weight: 600; color: var(--coral); letter-spacing: 0.2px; }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1px 200px 200px;
+    border-top: 1px solid var(--border);
+  }
+
+  .row:hover { background: #fafafa; }
+
+  .row.section-head {
+    background: #f3f2f1;
+  }
+
+  .row.section-head .row-label {
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .row-label {
+    padding: 11px 20px;
+    font-size: 13.5px;
+    color: var(--dark);
+    display: flex;
+    align-items: center;
+  }
+
+  .row-divider { background: var(--border); }
+
+  .row-cell {
+    padding: 8px 20px;
+    display: flex;
+    align-items: center;
+  }
+
+  .row-cell input, .row-cell select {
+    width: 100%;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    padding: 6px 8px;
+    font-family: inherit;
+    font-size: 13.5px;
+    color: var(--dark);
+    background: transparent;
+    outline: none;
+    transition: border-color 0.15s, background 0.15s;
+    text-align: right;
+  }
+
+  .row-cell input:focus, .row-cell select:focus {
+    border-color: var(--coral);
+    background: var(--white);
+    box-shadow: 0 0 0 3px var(--coral-light);
+    text-align: left;
+  }
+
+  .row-cell input[type="number"] { text-align: right; }
+  .row-cell input[type="number"]:focus { text-align: left; }
+
+  .row-cell .prefix {
+    font-size: 13px;
+    color: var(--muted);
+    margin-right: 4px;
+    flex-shrink: 0;
+  }
+
+  .row-cell .suffix {
+    font-size: 13px;
+    color: var(--muted);
+    margin-left: 4px;
+    flex-shrink: 0;
+  }
+
+  /* TOTALS */
+  .row.total-row {
+    background: var(--dark);
+    border-top: 2px solid var(--dark);
+  }
+
+  .row.total-row .row-label {
+    color: var(--white);
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .row.total-row .row-divider { background: rgba(255,255,255,0.1); }
+
+  .row.total-row .total-val {
+    padding: 14px 20px;
+    font-size: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    color: var(--white);
+  }
+
+  .row.total-row .total-val.alt { color: var(--coral); }
+
+  /* RESULT BANNER */
+  .result-banner {
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s;
+  }
+
+  .result-banner.saving {
+    background: var(--green-bg);
+    border: 1px solid #a7d9bf;
+    color: var(--green);
+  }
+
+  .result-banner.cost {
+    background: var(--amber-bg);
+    border: 1px solid #f6d28a;
+    color: var(--amber);
+  }
+
+  .result-banner.neutral {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+
+  .result-icon { font-size: 22px; flex-shrink: 0; }
+  .result-amount { font-size: 22px; font-weight: 700; }
+
+  /* TEXT SECTIONS */
+  .text-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 28px;
+  }
+
+  .text-card h3 {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+
+  .text-card textarea {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--dark);
+    background: var(--bg);
+    resize: vertical;
+    min-height: 100px;
+    outline: none;
+    line-height: 1.6;
+    transition: border-color 0.15s;
+  }
+
+  .text-card textarea:focus {
+    border-color: var(--coral);
+    background: var(--white);
+  }
+
+  /* FOOTNOTES */
+  .footnotes {
+    font-size: 11.5px;
+    color: var(--muted);
+    line-height: 1.7;
+    padding: 0 4px;
+    margin-bottom: 28px;
+  }
+
+  /* ACTIONS */
+  .actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+  }
+
+  .btn {
+    padding: 11px 24px;
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+  }
+
+  .btn-primary {
+    background: var(--coral);
+    color: var(--white);
+  }
+
+  .btn-primary:hover { background: #e5604f; }
+
+  .btn-secondary {
+    background: var(--white);
+    color: var(--dark);
+    border: 1px solid var(--border);
+  }
+
+  .btn-secondary:hover { background: var(--bg); }
+
+  /* PRINT */
+  @media print {
+    body { background: white; }
+    header { border-bottom: 1px solid #ccc; }
+    .actions { display: none; }
+    .row-cell input, .row-cell select { border: none; }
+    .field input, .field textarea, .text-card textarea { border: 1px solid #ddd; background: white; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="logo-chevron" viewBox="0 0 36 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 4 L28 22 L4 40" stroke="#F07B6B" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </svg>
+  <div class="logo-text">
+    <div class="top">Mortgage</div>
+    <div class="bottom">Advice Partners</div>
+  </div>
+  <span class="header-title">Remortgage Cost Comparison</span>
+</header>
+
+<main>
+
+  <!-- META -->
+  <div class="meta-card">
+    <div class="field">
+      <label>Customer(s) Name</label>
+      <input type="text" id="customerName" placeholder="e.g. Mr & Mrs Smith">
+    </div>
+    <div class="field">
+      <label>Adviser Name</label>
+      <input type="text" id="adviserName" placeholder="Your name">
+    </div>
+    <div class="field">
+      <label>Date Completed</label>
+      <input type="date" id="dateCompleted">
+    </div>
+  </div>
+
+  <!-- RESULT BANNER -->
+  <div class="result-banner neutral" id="resultBanner">
+    <span class="result-icon">⚖️</span>
+    <span id="resultText">Enter costs below to see your comparison summary.</span>
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="comparison-card">
+
+    <div class="comparison-header">
+      <div class="ch-label">Cost item</div>
+      <div class="ch-divider"></div>
+      <div class="ch-current">Current Lender</div>
+      <div class="ch-alt">Alternative Lender</div>
+    </div>
+
+    <!-- Lender name -->
+    <div class="row">
+      <div class="row-label">Name of lender</div>
+      <div class="row-divider"></div>
+      <div class="row-cell"><input type="text" id="c_lender" placeholder="Lender name" oninput="recalc()"></div>
+      <div class="row-cell"><input type="text" id="a_lender" placeholder="Lender name" oninput="recalc()"></div>
+    </div>
+
+    <!-- Product type -->
+    <div class="row">
+      <div class="row-label">Type of product</div>
+      <div class="row-divider"></div>
+      <div class="row-cell">
+        <select id="c_type" onchange="recalc()">
+          <option value="">— Select —</option>
+          <option>Fixed</option>
+          <option>Tracker</option>
+          <option>Discount</option>
+          <option>SVR</option>
+          <option>Offset</option>
+        </select>
+      </div>
+      <div class="row-cell">
+        <select id="a_type" onchange="recalc()">
+          <option value="">— Select —</option>
+          <option>Fixed</option>
+          <option>Tracker</option>
+          <option>Discount</option>
+          <option>SVR</option>
+          <option>Offset</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Deal period -->
+    <div class="row">
+      <div class="row-label">Period of initial deal (years)</div>
+      <div class="row-divider"></div>
+      <div class="row-cell">
+        <input type="number" id="c_period" min="0" step="0.5" placeholder="0" oninput="recalc()">
+        <span class="suffix">yrs</span>
+      </div>
+      <div class="row-cell">
+        <input type="number" id="a_period" min="0" step="0.5" placeholder="0" oninput="recalc()">
+        <span class="suffix">yrs</span>
+      </div>
+    </div>
+
+    <!-- Interest rate -->
+    <div class="row">
+      <div class="row-label">Interest rate</div>
+      <div class="row-divider"></div>
+      <div class="row-cell">
+        <input type="number" id="c_rate" min="0" step="0.01" placeholder="0.00" oninput="recalc()">
+        <span class="suffix">%</span>
+      </div>
+      <div class="row-cell">
+        <input type="number" id="a_rate" min="0" step="0.01" placeholder="0.00" oninput="recalc()">
+        <span class="suffix">%</span>
+      </div>
+    </div>
+
+    <!-- Section: costs -->
+    <div class="row section-head">
+      <div class="row-label">Costs over deal period</div>
+      <div class="row-divider"></div>
+      <div class="row-cell"></div>
+      <div class="row-cell"></div>
+    </div>
+
+    <!-- Repayments -->
+    <div class="row">
+      <div class="row-label">Cost of repayments over initial deal period (incl. overhang)</div>
+      <div class="row-divider"></div>
+      <div class="row-cell"><span class="prefix">£</span><input type="number" id="c_repay" min="0" step="0.01" placeholder="0.00" oninput="recalc()"></div>
+      <div class="row-cell"><span class="prefix">£</span><input type="number" id="a_repay" min="0" step="0.01" placeholder="0.00" oninput="recalc()"></div>
+    </div>
+
+    <!-- Product fees -->
+    <div class="row">
+      <div class="row-label">Product specific fees</div>
+      <div class="row-divider"></div>
+      <div class="row-cell"><span class="prefix">£</span><input type="number" id="c_fees" min="0" step="0.01" placeholder="0.00" oninput="recalc()"></div>
+      <div class="row-cell"><span class="prefix">£</span><input type="number" id="a_fees" min="0" step="0.01" placeholder="0.00" oninput="recalc()"></div>
+    </div>
+
+    <!-- Valuation -->
+    <div class="row">
+      <div class="row-label">Valuation fee</div>
+      <div class="row-divider"></div>
+      <div class="row-cell"><span class="prefix">£</span><input type="number" id="c_val" min="0" step="0.01" placeholder="0.00" oninput="recalc()"></div>
+      <div class="row-cell"><span class="prefix">£</span><input type="number" id="a_val" min="0" step="0.01" placeholder="0.00" oninput="recalc()"></div>
+    </div>
+
+    <!-- Legal -->
+    <div class="row">
+      <div class="row-label">Legal costs (Land Registry fees and searches)</div>
+      <div class="row-divider"></div>
+      <div class="row-cell"><span class="prefix">£</span><input type="number" id="c_legal" min="0" step="0.01" placeholder="0.00" oninput="recalc()"></div>
+      <div class="row-cell"><span class="prefix">£</span><input type="number" id="a_legal" min="0" step="0.01" placeholder="0.00" oninput="recalc()"></div>
+    </div>
+
+    <!-- ERC -->
+    <div class="row">
+      <div class="row-label">Early repayment charge for leaving current deal</div>
+      <div class="row-divider"></div>
+      <div class="row-cell"><span class="prefix">£</span><input type="number" id="c_erc" min="0" step="0.01" placeholder="0.00" oninput="recalc()"></div>
+      <div class="row-cell"><span class="prefix">£</span><input type="number" id="a_erc" min="0" step="0.01" placeholder="0.00" oninput="recalc()"></div>
+    </div>
+
+    <!-- Redemption -->
+    <div class="row">
+      <div class="row-label">Redemption admin / deeds release fee **</div>
+      <div class="row-divider"></div>
+      <div class="row-cell"><span class="prefix">£</span><input type="number" id="c_redemp" min="0" step="0.01" placeholder="0.00" oninput="recalc()"></div>
+      <div class="row-cell"><span class="prefix">£</span><input type="number" id="a_redemp" min="0" step="0.01" placeholder="0.00" oninput="recalc()"></div>
+    </div>
+
+    <!-- TT -->
+    <div class="row">
+      <div class="row-label">Telegraphic transfers</div>
+      <div class="row-divider"></div>
+      <div class="row-cell"><span class="prefix">£</span><input type="number" id="c_tt" min="0" step="0.01" placeholder="0.00" oninput="recalc()"></div>
+      <div class="row-cell"><span class="prefix">£</span><input type="number" id="a_tt" min="0" step="0.01" placeholder="0.00" oninput="recalc()"></div>
+    </div>
+
+    <!-- Other -->
+    <div class="row">
+      <div class="row-label">Other indirect switching costs *</div>
+      <div class="row-divider"></div>
+      <div class="row-cell"><span class="prefix">£</span><input type="number" id="c_other" min="0" step="0.01" placeholder="0.00" oninput="recalc()"></div>
+      <div class="row-cell"><span class="prefix">£</span><input type="number" id="a_other" min="0" step="0.01" placeholder="0.00" oninput="recalc()"></div>
+    </div>
+
+    <!-- TOTAL -->
+    <div class="row total-row">
+      <div class="row-label">Total cost over new deal period</div>
+      <div class="row-divider"></div>
+      <div class="total-val" id="c_total">£0.00</div>
+      <div class="total-val alt" id="a_total">£0.00</div>
+    </div>
+
+  </div>
+
+  <!-- FOOTNOTES -->
+  <div class="footnotes">
+    * For further details on possible indirect switching costs, please see section 5.2 of our guidance 'Formulating your home finance advice: analysis and research'.<br>
+    ** Closing administration charges incurred to the existing lender on completion of the remortgage.
+  </div>
+
+  <!-- OTHER FACTORS -->
+  <div class="text-card">
+    <h3>Other relevant factors considered</h3>
+    <textarea id="otherFactors" placeholder="e.g. amount of capital repaid over the deal period for each lender, service issues, flexibility of product, overpayment facility, portability…"></textarea>
+  </div>
+
+  <!-- CONCLUSION -->
+  <div class="text-card">
+    <h3>Conclusion</h3>
+    <textarea id="conclusion" placeholder="Summarise your recommendation and the rationale for your advice…"></textarea>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="actions">
+    <button class="btn btn-secondary" onclick="clearForm()">Clear form</button>
+    <button class="btn btn-primary" onclick="window.print()">Print / Save PDF</button>
+  </div>
+
+</main>
+
+<script>
+  // Set today's date
+  document.getElementById('dateCompleted').valueAsDate = new Date();
+
+  const fields = [
+    'c_repay','c_fees','c_val','c_legal','c_erc','c_redemp','c_tt','c_other',
+    'a_repay','a_fees','a_val','a_legal','a_erc','a_redemp','a_tt','a_other'
+  ];
+
+  function v(id) {
+    const el = document.getElementById(id);
+    if (!el) return 0;
+    return parseFloat(el.value) || 0;
+  }
+
+  function fmt(n) {
+    return '£' + n.toLocaleString('en-GB', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function recalc() {
+    const cTotal = v('c_repay') + v('c_fees') + v('c_val') + v('c_legal') +
+                   v('c_erc') + v('c_redemp') + v('c_tt') + v('c_other');
+    const aTotal = v('a_repay') + v('a_fees') + v('a_val') + v('a_legal') +
+                   v('a_erc') + v('a_redemp') + v('a_tt') + v('a_other');
+
+    document.getElementById('c_total').textContent = fmt(cTotal);
+    document.getElementById('a_total').textContent = fmt(aTotal);
+
+    const banner = document.getElementById('resultBanner');
+    const resultText = document.getElementById('resultText');
+
+    const hasData = fields.some(f => v(f) > 0);
+
+    if (!hasData) {
+      banner.className = 'result-banner neutral';
+      banner.querySelector('.result-icon').textContent = '⚖️';
+      resultText.innerHTML = 'Enter costs below to see your comparison summary.';
+      return;
+    }
+
+    const diff = cTotal - aTotal;
+
+    if (Math.abs(diff) < 0.01) {
+      banner.className = 'result-banner neutral';
+      banner.querySelector('.result-icon').textContent = '⚖️';
+      resultText.innerHTML = 'Both options have the same total cost over the deal period.';
+    } else if (diff > 0) {
+      banner.className = 'result-banner saving';
+      banner.querySelector('.result-icon').textContent = '✓';
+      resultText.innerHTML = `Switching to the alternative lender results in a saving of <span class="result-amount">${fmt(diff)}</span> over the deal period.`;
+    } else {
+      banner.className = 'result-banner cost';
+      banner.querySelector('.result-icon').textContent = '!';
+      resultText.innerHTML = `Switching to the alternative lender costs an additional <span class="result-amount">${fmt(Math.abs(diff))}</span> over the deal period.`;
+    }
+  }
+
+  function clearForm() {
+    if (!confirm('Clear all fields and start again?')) return;
+    document.querySelectorAll('input[type="text"], input[type="number"], select, textarea').forEach(el => {
+      if (el.type === 'date') return;
+      el.value = '';
+    });
+    document.getElementById('dateCompleted').valueAsDate = new Date();
+    recalc();
+  }
+
+  recalc();
+</script>
+</body>
+</html>
